@@ -62,7 +62,7 @@ message_with_multiple_tool_calls = AIMessage(
 
 # print(result)
 
-llm = ChatGoogleGenerativeAI(model='gemini-2.0-flash', api_key='AIzaSyCOWg0dPMJnAavv5G-AZ-FrgPu17OdWFB8')
+llm = ChatGoogleGenerativeAI(model='gemini-2.0-flash', api_key='')
 
 model_with_tools = llm.bind_tools(tools)
 
