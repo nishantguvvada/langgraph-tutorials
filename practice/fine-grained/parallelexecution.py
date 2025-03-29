@@ -27,7 +27,7 @@ class Joke(BaseModel):
 class BestJoke(BaseModel):
     id: int = Field(description="Index of the best joke, starting with 0", ge=0)
 
-model = ChatGoogleGenerativeAI(model='gemini-2.0-flash', api_key='AIzaSyCgFGQ7RKojzzvWcaVMDXY4tbTiFU6G8lM')
+model = ChatGoogleGenerativeAI(model='gemini-2.0-flash', api_key='')
 
 # State
 # 1. Overall State of the Graph
