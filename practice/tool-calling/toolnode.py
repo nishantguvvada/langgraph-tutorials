@@ -1,8 +1,8 @@
 # Use LangGraph's prebuilt ToolNode
 
-# ToolNode is a LangChain Runnable that takes graph state and outputs state update with the result  of tool calls.
+# ToolNode is a LangChain Runnable that takes graph state and outputs state update with the result of tool calls.
 # ToolNode works well with LangGraph's prebuilt ReAct agent
-# ToolNode also works with StateGraph as long as state has messages key with reduce (MessagesState)
+# ToolNode also works with StateGraph as long as state has messages key with a reducer (MessagesState)
 
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.tools import tool
