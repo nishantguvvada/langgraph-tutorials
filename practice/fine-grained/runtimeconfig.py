@@ -14,7 +14,7 @@ models = {
     "openai": "private",
 }
 
-# config is meant to contain things are not part of the input (and therefore that we don't want to track as part of the state)
+# config is meant to contain things not part of the input (and therefore that we don't want to track as part of the state)
 def _call_model(state: AgentState, config: RunnableConfig): 
     # response = model.invoke(state["messages"])
     # Access the config through the configurable key
