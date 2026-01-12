@@ -74,25 +74,41 @@ import operator
 
 # print(graph.invoke({ "question": "Hi" }))
 
-class PrivateState(TypedDict):
-    private: str
-    flag: bool
+# class PrivateState(TypedDict):
+#     private: str
+#     flag: bool
 
-class GeneralState(TypedDict):
-    messages: Annotated[AnyMessage, operator.add]
+# class GeneralState(TypedDict):
+#     messages: Annotated[AnyMessage, operator.add]
 
-def node_a(state: GeneralState):
-    extracted_input = state['messages']
-    return { "private": f"PRIVATE MESSAGE: `{extracted_input}`", "flag": False }
+# def node_a(state: GeneralState):
+#     extracted_input = state['messages']
+#     return { "private": f"PRIVATE MESSAGE: `{extracted_input}`", "flag": False }
 
-def node_b(state: PrivateState):
-    if state["flag"]:
-        return { "messages": AIMessage(["End of message: No Secret Message"])}
-    else:
-        return { "messages": AIMessage([f"SECRET MESSAGE: {state["private"]}"])}
+# def node_b(state: PrivateState):
+#     if state["flag"]:
+#         return { "messages": AIMessage(["End of message: No Secret Message"])}
+#     else:
+#         return { "messages": AIMessage([f"SECRET MESSAGE: {state["private"]}"])}
     
-builder = StateGraph(GeneralState).add_node("a", node_a).add_node("b", node_b).set_entry_point("a")
-builder.add_edge("a", "b")
+# builder = StateGraph(GeneralState).add_node("a", node_a).add_node("b", node_b).set_entry_point("a")
+# builder.add_edge("a", "b")
+# graph = builder.compile()
+
+# print(graph.invoke({ "messages": HumanMessage(["Hi from Human"]) }))
+
+from pydantic import BaseModel
+
+class State(BaseModel):
+    input: int
+
+def node(state: State):
+    return { "input": state.input + 10 }
+
+builder = StateGraph(State).add_node("node", node).set_entry_point("node")
 graph = builder.compile()
 
-print(graph.invoke({ "messages": HumanMessage(["Hi from Human"]) }))
+try:
+    print(graph.invoke({ "input": "yes" }))
+except Exception as e:
+    print(e)
