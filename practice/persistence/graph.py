@@ -48,3 +48,85 @@ print("State History: \n", history)
 
 # Memory Store: Retain information across threads
 
+from langgraph.store.memory import InMemoryStore
+import uuid
+
+in_memory_store = InMemoryStore()
+memory_id = str(uuid.uuid4())
+
+# Memories are namespaced by a tuple
+namespace_for_memory = ("1", "memories")
+memory = {"food_preference": "Pizza"}
+
+# Use put() to store memory
+in_memory_store.put(namespace_for_memory, memory_id, memory)
+
+# Read memories from the store using store.search
+memories = in_memory_store.search(namespace_for_memory)
+# print(memories[-1].dict())
+
+# Semantic Search: beyond simple retrieval, store supports semantic search
+# from langchain.embeddings import init_embeddings
+# from dotenv import load_dotenv
+# from langchain_google_genai import GoogleGenerativeAIEmbeddings
+# import os
+
+# load_dotenv()
+
+# embeddings = GoogleGenerativeAIEmbeddings(
+#     model="text-embedding-004",
+#     google_api_key=os.getenv('GEMINI_API_KEY')
+# )
+
+
+# new_store = InMemoryStore(
+#     index={
+#         "embed": init_embeddings('google_genai:gemini-embedding-001'),  # Embedding provider
+#         "dims": 1536,                              # Embedding dimensions
+#         "fields": ["food_preference", "$"]              # Fields to embed
+#     }
+# )
+
+# new_store.put(namespace_for_memory, memory_id, memory)
+
+# memories = new_store.search(namespace_for_memory, query="what does the user like to eat?", limit=3)
+# print("Semantically Searched Memories: \n", memories)
+"""
+# Store with specific fields to embed
+store.put(
+    namespace_for_memory,
+    str(uuid.uuid4()),
+    {
+        "food_preference": "I love Italian cuisine",
+        "context": "Discussing dinner plans"
+    },
+    index=["food_preference"]  # Only embed "food_preferences" field
+)
+
+# Store without embedding (still retrievable, but not searchable)
+store.put(
+    namespace_for_memory,
+    str(uuid.uuid4()),
+    {"system_info": "Last updated: 2024-01-01"},
+    index=False
+)
+"""
+
+# Using store and checkpointer in LangGraph
+
+# graph = graph.compile(checkpointer=checkpointer, store=in_memory_store)
+
+# user_id = "1"
+# config = {"configurable": {"thread_id": "1", "user_id": user_id}}
+
+# graph.invoke({"messages": [{"role": "user", "content": "hi"}]}, config)
+
+# # We can access the store and user_id in any node using store: BaseStore and config: RunnableConfig
+
+# def update_memory(state: State, config: RunnableConfig, *, store: BaseStore):
+
+#     user_id = config["configurable"]["user_id"]
+#     namespace = (user_id, "memories")
+#     memory_id = str(uuid.uuid4())
+
+#     store.put(namespace, memory_id, { "memory": { "food preference": "Pizza" } })
